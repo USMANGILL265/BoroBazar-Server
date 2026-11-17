@@ -1,20 +1,35 @@
-import mongoose from 'mongoose';
-import dotenv from 'dotenv';
+import mongoose from "mongoose";
+import dotenv from "dotenv";
 
 dotenv.config();
 
-if (!process.env.MONGODB_URI) {
-    throw new Error("Please provide MONGODB_URI in the .env file");
+let cached = global.mongooseCache;
+if (!cached) {
+  cached = global.mongooseCache = { conn: null, promise: null };
 }
 
 async function connectDb() {
-    try {
-        await mongoose.connect(process.env.MONGODB_URI);
+  if (!process.env.MONGODB_URI) {
+    throw new Error("Please provide MONGODB_URI in environment variables");
+  }
+
+  if (cached.conn) return cached.conn;
+
+  if (!cached.promise) {
+    cached.promise = mongoose
+      .connect(process.env.MONGODB_URI, { bufferCommands: false })
+      .then((m) => {
         console.log("Connect DB");
-    } catch (error) {
-        console.log("Mongodb connect error", error);
-        process.exit(1);
-    }
+        return m;
+      })
+      .catch((error) => {
+        cached.promise = null; // agli request par dobara try ho
+        throw error;
+      });
+  }
+
+  cached.conn = await cached.promise;
+  return cached.conn;
 }
 
 export default connectDb;
