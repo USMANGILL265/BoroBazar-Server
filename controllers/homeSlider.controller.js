@@ -8,6 +8,15 @@ cloudinary.config({
   secure: true,
 });
 
+const uploadBuffer = (buffer, options) =>
+  new Promise((resolve, reject) => {
+    cloudinary.uploader
+      .upload_stream(options, (error, result) =>
+        error ? reject(error) : resolve(result)
+      )
+      .end(buffer);
+  });
+
 export async function imagesUplaod(request, response) {
   try {
     const images = request.files || [];
@@ -30,18 +39,15 @@ export async function imagesUplaod(request, response) {
     };
 
     for (const image of images) {
-      try {
-        const result = await cloudinary.uploader.upload(image.path, options);
+      const result = await uploadBuffer(image.buffer, {
+        ...options,
+        filename_override: image.originalname,
+      });
 
-        imagesArr.push({
-          url: result.secure_url,
-          public_id: result.public_id,
-        });
-      } finally {
-        if (fs.existsSync(image.path)) {
-          await fs.promises.unlink(image.path);
-        }
-      }
+      imagesArr.push({
+        url: result.secure_url,
+        public_id: result.public_id,
+      });
     }
 
     return response.status(200).json({
@@ -205,7 +211,6 @@ export async function deleteHomeSlide(request, response) {
       success: true,
       error: false,
     });
-
   } catch (error) {
     console.log("Delete Home Slide Error:", error);
 
