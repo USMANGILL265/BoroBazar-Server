@@ -39,6 +39,5 @@ userRouter.post(
 );
 
 userRouter.post("/authWithGoogle", authWithGoogle)
-userRouter.get("/getAllUsers", getAllUsers);
 
 export default userRouter;

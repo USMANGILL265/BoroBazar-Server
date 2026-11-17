@@ -653,23 +653,3 @@ export async function authWithGoogle(request, response) {
   }
 }
 
-export async function getAllUsers(request, response) {
-  try {
-    const users = await UserModel.find()
-      .select("-password -otp -otpExpires -refreshToken")
-      .sort({ createdAt: -1 });
-
-    return response.status(200).json({
-      success: true,
-      error: false,
-      total: users.length,
-      users: users,
-    });
-  } catch (error) {
-    return response.status(500).json({
-      success: false,
-      error: true,
-      message: error.message || error,
-    });
-  }
-}
