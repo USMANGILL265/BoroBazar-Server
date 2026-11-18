@@ -14,7 +14,7 @@ const auth = async (request, response, next) => {
       });
     }
 
-    const decode = jwt.verify(token, process.env.SECRET_KEY_ACCESS_TOKEN);
+    const decode = jwt.verify(token, process.env.SECRET_KEY_ACESS_TOKEN);
 
     if (!decode) {
       return response.status(401).json({
@@ -27,6 +27,7 @@ const auth = async (request, response, next) => {
     request.userId = decode.id;
     next();
   } catch (error) {
+    console.log("Auth error:", error.message);
     return response.status(401).json({
       message: "You have not login or token expired",
       error: true,
