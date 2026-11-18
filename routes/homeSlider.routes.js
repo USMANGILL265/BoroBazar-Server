@@ -16,34 +16,34 @@ const homeSliderRouter = Router();
 homeSliderRouter.get("/getHomeSlides", getHomeSlides);
 homeSliderRouter.post(
   "/uploadImages",
-  // auth,
+  auth,
   upload.array("images"),
   imagesUplaod
 );
 
 homeSliderRouter.delete(
   "/deleteImage",
-  // auth,
+  auth,
   deleteImage
 );
 
 
 homeSliderRouter.post(
   "/addHomeSlide",
-  // auth,
+  auth,
   addHomeSlide
 );
 
 
 homeSliderRouter.put(
   "/updateHomeSlide/:id",
-  // auth,
+  auth,
   updateHomeSlide
 );
 
 homeSliderRouter.delete(
   "/deleteHomeSlide/:id",
-  // auth,
+  auth,
   deleteHomeSlide
 );
 
