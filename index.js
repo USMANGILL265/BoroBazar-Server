@@ -8,7 +8,7 @@ import connectDb from "./config/connectDb.js";
 
 import homeSliderRouter from "./routes/homeSlider.routes.js";
 import userRouter from "./routes/user.route.js";
-
+import categoryRouter from "./routes/category.routes.js";
 const app = express();
 app.use(cors());
 app.options("/{*splat}", cors());
@@ -19,10 +19,9 @@ app.use(cookieParser());
 app.use(
   helmet({
     crossOriginResourcePolicy: false,
-  })
+  }),
 );
 
-// Har request se pehle DB connect (Vercel serverless ke liye)
 app.use(async (req, res, next) => {
   try {
     await connectDb();
@@ -41,8 +40,8 @@ app.get("/", (request, response) => {
 
 app.use("/api/user", userRouter);
 app.use("/api/homeSlider", homeSliderRouter);
+app.use("/api/category", categoryRouter);
 
-// Local par chalane ke liye; Vercel par listen nahi hota
 if (!process.env.VERCEL) {
   const PORT = process.env.PORT || 8000;
   app.listen(PORT, () => {
