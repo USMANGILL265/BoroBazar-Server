@@ -257,6 +257,7 @@ export async function updateCategory(request, response) {
     });
   }
 }
+
 // Get single category by ID
 export async function getSingleCategory(request, response) {
   try {

@@ -9,6 +9,7 @@ import connectDb from "./config/connectDb.js";
 import homeSliderRouter from "./routes/homeSlider.routes.js";
 import userRouter from "./routes/user.route.js";
 import categoryRouter from "./routes/category.routes.js";
+import productRouter from "./routes/product.route.js";
 const app = express();
 app.use(cors());
 app.options("/{*splat}", cors());
@@ -41,6 +42,7 @@ app.get("/", (request, response) => {
 app.use("/api/user", userRouter);
 app.use("/api/homeSlider", homeSliderRouter);
 app.use("/api/category", categoryRouter);
+app.use("/api/product", productRouter);
 
 if (!process.env.VERCEL) {
   const PORT = process.env.PORT || 8000;
