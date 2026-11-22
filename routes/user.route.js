@@ -12,6 +12,7 @@ import {
   verifyPasswordController,
   resendForgotPasswordOtpController,
   authWithGoogle,
+  getUsersCountController
 } from "../controllers/user.controller.js";
 
 import auth from "../middlewares/auth.js";
@@ -38,6 +39,9 @@ userRouter.post(
   changePasswordController
 );
 
-userRouter.post("/authWithGoogle", authWithGoogle)
+userRouter.post("/authWithGoogle", authWithGoogle);
+
+userRouter.get("/getUsersCount", auth, getUsersCountController);
+
 
 export default userRouter;

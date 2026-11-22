@@ -653,3 +653,25 @@ export async function authWithGoogle(request, response) {
   }
 }
 
+
+export async function getUsersCountController(request, response) {
+  try {
+    const userCount = await UserModel.countDocuments();
+
+    return response.status(200).json({
+      success: true,
+      error: false,
+      userCount,
+    });
+  } catch (error) {
+    console.log("Get Users Count Error:", error);
+
+    return response.status(500).json({
+      success: false,
+      error: true,
+      message: error.message || "Unable to get users count",
+    });
+  }
+}
+
+
