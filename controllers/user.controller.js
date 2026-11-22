@@ -675,3 +675,25 @@ export async function getUsersCountController(request, response) {
 }
 
 
+
+export async function getAllUsersController(request, response) {
+  try {
+    const users = await UserModel.find()
+      .select("name email mobile avatar role status createdAt")
+      .sort({ createdAt: -1 });
+
+    return response.status(200).json({
+      success: true,
+      error: false,
+      users,
+    });
+  } catch (error) {
+    console.log("Get All Users Error:", error);
+
+    return response.status(500).json({
+      success: false,
+      error: true,
+      message: error.message || "Unable to fetch users",
+    });
+  }
+}
